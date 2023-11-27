@@ -1,6 +1,6 @@
 ﻿namespace CheshkaWatchDog
 {
-    partial class Service1
+    partial class CheskaWatchDog
     {
         /// <summary> 
         /// Обязательная переменная конструктора.

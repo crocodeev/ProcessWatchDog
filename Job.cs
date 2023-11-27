@@ -14,6 +14,7 @@ namespace CheshkaWatchDog
         
             JobDataMap dataMap = context.JobDetail.JobDataMap;
             string processName = dataMap.GetString("ProcessName");
+            
 
             Process[] processes = Process.GetProcessesByName(processName);
 

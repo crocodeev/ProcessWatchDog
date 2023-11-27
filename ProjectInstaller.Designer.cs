@@ -41,7 +41,7 @@
             // 
             this.serviceInstaller1.Description = "Allow to start, restart and check cheshka process";
             this.serviceInstaller1.DisplayName = "CheshkaWatchDog";
-            this.serviceInstaller1.ServiceName = "Service1";
+            this.serviceInstaller1.ServiceName = "CheshkaWatchDog";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

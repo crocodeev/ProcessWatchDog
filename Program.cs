@@ -17,7 +17,7 @@ namespace CheshkaWatchDog
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new Service1()
+                new CheskaWatchDog()
             };
             ServiceBase.Run(ServicesToRun);
         }

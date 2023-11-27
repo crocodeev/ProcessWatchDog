@@ -17,10 +17,10 @@ using Microsoft.Win32;
 
 namespace CheshkaWatchDog
 {
-    public partial class Service1 : ServiceBase
+    public partial class CheskaWatchDog : ServiceBase
     {
         private string target = null;
-        private readonly IScheduler scheduler;
+        private static IScheduler _scheduler;
         EventLog logger = new EventLog();
         System.Timers.Timer timer = new System.Timers.Timer();
 
@@ -47,11 +47,10 @@ namespace CheshkaWatchDog
             public int dwWaitHint;
         };
 
-        public Service1()
+        public CheskaWatchDog()
         {
             InitializeComponent();
             logger = new EventLog();
-            scheduler = new StdSchedulerFactory().GetScheduler().Result;
             if (!EventLog.SourceExists("CheshkaWatchDog"))
             {
                 EventLog.CreateEventSource(
@@ -67,6 +66,7 @@ namespace CheshkaWatchDog
 
         protected override void OnStart(string[] args)
         {
+            logger.WriteEntry("Try start");
             //set PENDING status
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
@@ -86,7 +86,7 @@ namespace CheshkaWatchDog
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
-
+            
             if (target == null)
             {
                 logger.WriteEntry("There is no RB_*.exe on this PC");
@@ -105,65 +105,24 @@ namespace CheshkaWatchDog
                 timer.Interval = 5000;
                 timer.Start();
 
-                logger.WriteEntry("Set schedule");
-
+                logger.WriteEntry("Setting schedule...", EventLogEntryType.Information);
                 string schedule = GetSettingFromRegistry();
-
                 logger.WriteEntry(schedule);
-
-                if (schedule != null)
-                {
-
-                    IEnumerable<TimeObject> timeObjects = TimeConverter.ConvertToTimeObjects(schedule);
-                    string processName = GetBaseNameWithoutExtension(target);
-
-                    foreach (var item in timeObjects)
-                    {
-
-                        
-                            IJobDetail job = JobBuilder.Create<MyJob>()
-                            .WithIdentity($"{item.Hour}:{item.Minute}", "group1")
-                            .UsingJobData("ProcessName", processName) // Pass parameters here
-                            .Build();
-
-                            ITrigger trigger = TriggerBuilder.Create()
-                                .WithIdentity("myTrigger", "group1")
-                                .StartNow()
-                                .WithDailyTimeIntervalSchedule(x => x
-                                    .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(item.Hour, item.Minute))
-                                    .WithIntervalInHours(24)
-                                    .OnEveryDay())
-                                .Build();
-                        try
-                        {
-                            // Schedule the job with the trigger
-                            scheduler.ScheduleJob(job, trigger);
-                        }
-                        catch (Exception ex)
-                        {
-
-                            logger.WriteEntry(ex.Message);
-                        }
-                        
-                    }
-                }
-
                 try
                 {
-                    scheduler.Start().Wait();
+                    SetScheduler(schedule);
                 }
                 catch (Exception ex)
                 {
 
-                    logger.WriteEntry(ex.Message);
+                    logger.WriteEntry(ex.Message, EventLogEntryType.Error);
                 }
-                
             }
         }
 
         protected override void OnStop()
         {
-            scheduler.Shutdown().Wait();
+            _scheduler.Shutdown().Wait();
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOP_PENDING;
             serviceStatus.dwWaitHint = 100000;
@@ -289,6 +248,54 @@ namespace CheshkaWatchDog
             string nameWithExtension = Path.GetFileName(fullName);
             string clearName = Path.ChangeExtension(nameWithExtension, null);
             return clearName;
+        }
+
+        private void SetScheduler(string schedule)
+        {
+
+            if (schedule == null)
+            {
+                return;
+            }
+
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            _scheduler = schedulerFactory.GetScheduler().Result;
+            _scheduler.Start();
+
+            IEnumerable<TimeObject> timeObjects = TimeConverter.ConvertToTimeObjects(schedule);
+            string processName = GetBaseNameWithoutExtension(target);
+
+            foreach (var item in timeObjects)
+            {
+
+
+                IJobDetail job = JobBuilder.Create<MyJob>()
+                .WithIdentity($"jb {item.Hour}:{item.Minute}", "group1")
+                .UsingJobData("ProcessName", processName) // Pass parameters here
+                .Build();
+
+                ITrigger trigger = TriggerBuilder.Create()
+                    .WithIdentity($"tr {item.Hour}:{item.Minute}", "group1")
+                    .StartNow()
+                    .WithDailyTimeIntervalSchedule(x => x
+                        .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(item.Hour, item.Minute))
+                        .WithIntervalInHours(24)
+                        .OnEveryDay())
+                    .Build();
+                try
+                {
+                    // Schedule the job with the trigger
+                    _scheduler.ScheduleJob(job, trigger);
+
+                }
+                catch (Exception ex)
+                {
+
+                    logger.WriteEntry(ex.Message);
+                }
+
+            }
+
         }
     }
 }
