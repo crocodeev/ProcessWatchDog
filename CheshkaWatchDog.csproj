@@ -70,7 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Job.cs" />
+    <Compile Include="RestartJob.cs" />
     <Compile Include="ProcessExtension.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
