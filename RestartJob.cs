@@ -32,7 +32,7 @@ namespace CheshkaWatchDog
                 { process.Kill();
                   //this.callback.Invoke(true, "Killing " + processName);
                 } 
-                catch (Exception ex)
+                catch (Exception)
                 {
                    //this.callback.Invoke(false, "Exeption killing process: " + ex.Message);  
                 }

@@ -62,7 +62,7 @@ namespace CheshkaWatchDog
                     logSource, logName);
             }
             logger.Source = logSource;
-            logger.Log = logName;
+            //logger.Log = logName;
             logger.Clear();
         }
 
@@ -76,6 +76,10 @@ namespace CheshkaWatchDog
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
             serviceStatus.dwWaitHint = 100000;
+            SetServiceStatus(this.ServiceHandle, ref serviceStatus);
+
+            //set RUNNING status
+            serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
             try
@@ -92,10 +96,6 @@ namespace CheshkaWatchDog
                 logger.WriteEntry("There is no RB_*.exe on this PC", EventLogEntryType.Error);
                 SelfStop();
             }
-
-            //set RUNNING status
-            serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
-            SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
             logger.WriteEntry("Service started", EventLogEntryType.Information);
             logger.WriteEntry("Waiting for RS to do job.", EventLogEntryType.Information);
