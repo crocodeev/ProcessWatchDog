@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheshkaWatchDog", "CheshkaWatchDog.csproj", "{93135B60-48E0-4F4B-889E-93189319A543}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupCheshkaWatchDog", "SetupCheshkaWatchDog\SetupCheshkaWatchDog.vdproj", "{94907FF2-268F-4025-B0CC-EDDC32119A88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{93135B60-48E0-4F4B-889E-93189319A543}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93135B60-48E0-4F4B-889E-93189319A543}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93135B60-48E0-4F4B-889E-93189319A543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94907FF2-268F-4025-B0CC-EDDC32119A88}.Debug|Any CPU.ActiveCfg = Debug
+		{94907FF2-268F-4025-B0CC-EDDC32119A88}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
