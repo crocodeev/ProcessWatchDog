@@ -25,5 +25,18 @@ namespace CheshkaWatchDog
             InstallerHelper.WriteToRegisry(schedule);
 
         }
+
+        protected override void OnBeforeInstall(IDictionary savedState)
+        {
+            base.OnBeforeInstall(savedState);
+
+            InstallerHelper.DeleteService("chesckaWatchDog");
+            InstallerHelper.DeleteService("cheshkaWatchDog2");
+            InstallerHelper.DeleteExe("C:\\cheshkaWatchDog.exe");
+            InstallerHelper.DeleteExe("C:\\cheshkaWatchDog2.exe");
+            InstallerHelper.DeleteFolder("C:\\cheshkaWatchDog");
+            InstallerHelper.DeleteFolder("C:\\cheshkaWatchDogLogs");
+        }
+
     }
 }

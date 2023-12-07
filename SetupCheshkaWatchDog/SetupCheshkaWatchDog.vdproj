@@ -57,6 +57,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_2FC52B07614C47E48C7D3B22B62E98BF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_369B4068505B75315424615CCA3338B5"
         "OwnerKey" = "8:_451BA4784C7B47C19E569DD1E8CDCF85"
         "MsmSig" = "8:_UNDEFINED"
@@ -123,6 +129,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D783C5166E8EFD2D6EC0603179AF1C79"
+        "OwnerKey" = "8:_2FC52B07614C47E48C7D3B22B62E98BF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_E6E4B0E49BE57A817F8CB21B0770900D"
         "OwnerKey" = "8:_EC55940D121F87C0023FCF418AB7F606"
         "MsmSig" = "8:_UNDEFINED"
@@ -160,13 +172,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A4436F3C84AA4670AD2AD8B76112E307"
+        "OwnerKey" = "8:_451BA4784C7B47C19E569DD1E8CDCF85"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_451BA4784C7B47C19E569DD1E8CDCF85"
+        "OwnerKey" = "8:_2FC52B07614C47E48C7D3B22B62E98BF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -235,6 +247,12 @@
         "OwnerKey" = "8:_D618A7F1F1539649BFB1FEF6B2350227"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A4436F3C84AA4670AD2AD8B76112E307"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -253,6 +271,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -269,6 +295,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -826,7 +868,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CheshkaWatchDog"
         "ProductCode" = "8:{2D7442DB-3A79-48EC-A215-9CF271D46AF9}"
-        "PackageCode" = "8:{1A10731D-4281-47F7-AED3-D81915B4783D}"
+        "PackageCode" = "8:{34B82CA0-A710-434F-A289-E79E8DF758CB}"
         "UpgradeCode" = "8:{93D320D0-9AA3-4777-ABBC-32A61BBB9707}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -843,7 +885,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_02E18252906E4D7183C92BFFE2D8608B"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -954,7 +996,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_451BA4784C7B47C19E569DD1E8CDCF85"
+            "Target" = "8:_2FC52B07614C47E48C7D3B22B62E98BF"
             "Folder" = "8:_8224E35886FF4F2787864CABF62BF9AF"
             "WorkingFolder" = "8:_2394F0AB1DFB4D9C80149959522A7C66"
             "Icon" = "8:_02E18252906E4D7183C92BFFE2D8608B"
@@ -1556,6 +1598,34 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_2FC52B07614C47E48C7D3B22B62E98BF"
+            {
+            "SourcePath" = "8:..\\CheshkaWatchDogConfigurator\\obj\\Release\\CheshkaWatchDogConfigurator.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2394F0AB1DFB4D9C80149959522A7C66"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{B3EDB6AC-6EFD-4C0D-88C2-60163AB187FB}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_451BA4784C7B47C19E569DD1E8CDCF85"
             {
             "SourcePath" = "8:..\\obj\\Release\\CheshkaWatchDog.exe"

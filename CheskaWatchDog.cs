@@ -20,12 +20,12 @@ namespace CheshkaWatchDog
     public partial class CheskaWatchDog : ServiceBase
     {
         private string target = null;
-        private static IScheduler _scheduler;
+        private IScheduler _scheduler;
         private string logSource = "CheshkaWatchDog";
         private string logName = "CheshkaWatchDogLogs";
-        EventLog logger = new EventLog();
-        System.Timers.Timer pollingTimer = new System.Timers.Timer();
-        System.Timers.Timer waitingTimer = new System.Timers.Timer();
+        private EventLog logger = new EventLog();
+        private System.Timers.Timer pollingTimer = new System.Timers.Timer();
+        private System.Timers.Timer waitingTimer = new System.Timers.Timer();
 
         public enum ServiceState
         {
@@ -63,7 +63,7 @@ namespace CheshkaWatchDog
             }
             logger.Source = logSource;
             //logger.Log = logName;
-            logger.Clear();
+            //logger.Clear();
         }
 
         [DllImport("advapi32.dll", SetLastError = true)]
@@ -77,7 +77,6 @@ namespace CheshkaWatchDog
             serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
-
             //set RUNNING status
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
@@ -97,7 +96,6 @@ namespace CheshkaWatchDog
                 SelfStop();
             }
 
-            logger.WriteEntry("Service started", EventLogEntryType.Information);
             logger.WriteEntry("Waiting for RS to do job.", EventLogEntryType.Information);
 
             waitingTimer.Start();
@@ -105,15 +103,30 @@ namespace CheshkaWatchDog
 
         protected override void OnStop()
         {
-            _scheduler.Shutdown().Wait();
-            pollingTimer.Stop();
+            try {
+
+                if (!(_scheduler == null)) {
+                    _scheduler.Shutdown().Wait();
+                }
+            }
+            catch (Exception ex){
+                logger.WriteEntry("scheduler " + ex.Message + ' ' + ex.StackTrace, EventLogEntryType.Error);
+            }
+
+            try
+            {
+
+                pollingTimer.Stop();
+            }
+            catch (Exception ex)
+            {
+                logger.WriteEntry("timer " + ex.Message + ' ' + ex.StackTrace, EventLogEntryType.Error);
+            }
 
             ServiceStatus serviceStatus = new ServiceStatus();
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOP_PENDING;
             serviceStatus.dwWaitHint = 100000;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
-
-            logger.WriteEntry("Service stopped", EventLogEntryType.Information);
 
             serviceStatus.dwCurrentState = ServiceState.SERVICE_STOPPED;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
