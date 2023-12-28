@@ -66,6 +66,22 @@ namespace CheshkaWatchDog
 
             try
             {
+                InstallerHelper.DeleteService("CheshkaWatchDog");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(
+                        $"{ex}",
+                        "Error occured during uninstall CheshkaWatchDog , please, do it manually",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly);
+            }
+
+            try
+            {
                 InstallerHelper.DeleteExe("C:\\cheshkaWatchDog.exe");
             }
             catch (Exception ex)

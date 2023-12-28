@@ -134,7 +134,15 @@ namespace CheshkaWatchDog
 
         private void onPollingTimer(object sender, ElapsedEventArgs args)
         {
-            Check();
+
+            if (!Check()) 
+            { 
+                Thread.Sleep(10000);
+                target = GetTarget("RB_*.exe");
+                if (!Check()) { 
+                    StartProcess();
+                }
+            }
         }
 
         private void onWaitingTimer(object sender, ElapsedEventArgs args) {
@@ -160,14 +168,14 @@ namespace CheshkaWatchDog
             waitingTimer.Stop();
         }
 
-        private void Check()
+        private bool Check()
         {
             string name = GetBaseNameWithoutExtension(target);
             Process[] processes = Process.GetProcessesByName(name);
             if (processes.Length == 0)
             {
                 logger.WriteEntry(this.target + " does not running...", EventLogEntryType.Warning);
-                ProcessExtension.StartProcessAsCurrentUser(target);
+                return false;
             }
             if (processes.Length > 2)
             {
@@ -185,8 +193,25 @@ namespace CheshkaWatchDog
                         logger.WriteEntry($"Error: {ex.Message}", EventLogEntryType.Error);
                     }
                 }
+                return false;
             }
 
+            return true;
+
+        }
+
+        private void StartProcess() 
+        {
+            try
+            {
+                ProcessExtension.StartProcessAsCurrentUser(target);
+            }
+            catch (Exception ex)
+            {
+
+                logger.WriteEntry($"Error: {ex.Message}", EventLogEntryType.Error);
+            }
+            
         }
 
         private string Comparator(string a, string b)
