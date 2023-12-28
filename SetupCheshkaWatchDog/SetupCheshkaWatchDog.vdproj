@@ -124,13 +124,13 @@
         "Entry"
         {
         "MsmKey" = "8:_D783C5166E8EFD2D6EC0603179AF1C79"
-        "OwnerKey" = "8:_451BA4784C7B47C19E569DD1E8CDCF85"
+        "OwnerKey" = "8:_2FC52B07614C47E48C7D3B22B62E98BF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D783C5166E8EFD2D6EC0603179AF1C79"
-        "OwnerKey" = "8:_2FC52B07614C47E48C7D3B22B62E98BF"
+        "OwnerKey" = "8:_451BA4784C7B47C19E569DD1E8CDCF85"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -173,12 +173,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_451BA4784C7B47C19E569DD1E8CDCF85"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2FC52B07614C47E48C7D3B22B62E98BF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -220,12 +214,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D783C5166E8EFD2D6EC0603179AF1C79"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_1E7CE1518B54ECEE1AA6366A6B3F5694"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -253,6 +241,18 @@
         "OwnerKey" = "8:_A4436F3C84AA4670AD2AD8B76112E307"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2FC52B07614C47E48C7D3B22B62E98BF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D783C5166E8EFD2D6EC0603179AF1C79"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -278,6 +278,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -868,7 +876,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CheshkaWatchDog"
         "ProductCode" = "8:{2D7442DB-3A79-48EC-A215-9CF271D46AF9}"
-        "PackageCode" = "8:{34B82CA0-A710-434F-A289-E79E8DF758CB}"
+        "PackageCode" = "8:{73AFAD6C-AEAE-4D51-937B-7C2F589B3ABF}"
         "UpgradeCode" = "8:{93D320D0-9AA3-4777-ABBC-32A61BBB9707}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Configuration.Install;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CheshkaWatchDog
 {
@@ -30,12 +31,103 @@ namespace CheshkaWatchDog
         {
             base.OnBeforeInstall(savedState);
 
-            InstallerHelper.DeleteService("chesckaWatchDog");
-            InstallerHelper.DeleteService("cheshkaWatchDog2");
-            InstallerHelper.DeleteExe("C:\\cheshkaWatchDog.exe");
-            InstallerHelper.DeleteExe("C:\\cheshkaWatchDog2.exe");
-            InstallerHelper.DeleteFolder("C:\\cheshkaWatchDog");
-            InstallerHelper.DeleteFolder("C:\\cheshkaWatchDogLogs");
+            
+            try
+            {
+                InstallerHelper.DeleteService("chesckaWatchDog");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(
+                        $"{ex}",
+                        "Error occured during uninstall chesckaWatchDog, please, do it manually",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly);
+            }
+
+            try
+            {
+                InstallerHelper.DeleteService("cheshkaWatchDog2");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(
+                        $"{ex}",
+                        "Error occured during uninstall chesckaWatchDog2, please, do it manually",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly);
+            }
+
+            try
+            {
+                InstallerHelper.DeleteExe("C:\\cheshkaWatchDog.exe");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(
+                        $"{ex}",
+                        "Error occured during delete cheshkaWatchDog.exe, please, do it manually",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly);
+            }
+
+            try
+            {
+                InstallerHelper.DeleteExe("C:\\cheshkaWatchDog2.exe");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(
+                        $"{ex}",
+                        "Error occured during delete cheshkaWatchDog2.exe, please, do it manually",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly);
+            }
+
+            try
+            {
+                InstallerHelper.DeleteFolder("C:\\cheshkaWatchDog");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(
+                        $"{ex}",
+                        "Error occured during remove C:\\cheshkaWatchDog folder, please, do it manually",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly);
+            }
+
+            try
+            {
+                InstallerHelper.DeleteFolder("C:\\cheshkaWatchDogLogs");
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(
+                        $"{ex}",
+                        "Error occured during remove C:\\cheshkaWatchDogLogs folder, please, do it manually",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.DefaultDesktopOnly);
+            }
+            
         }
 
     }
