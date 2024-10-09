@@ -1,4 +1,4 @@
-﻿namespace CheshkaWatchDogConfigurator
+﻿namespace ProcessWatchDogConfigurator
 {
     partial class Form1
     {
@@ -39,9 +39,13 @@
             this.ADD = new System.Windows.Forms.Button();
             this.CLEAR = new System.Windows.Forms.Button();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
+            this.Status = new System.Windows.Forms.Button();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker3 = new System.ComponentModel.BackgroundWorker();
-            this.Status = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.SELECT = new System.Windows.Forms.Button();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox1
@@ -59,7 +63,7 @@
             // 
             this.helpProvider1.SetHelpKeyword(this.SaveRestart, "");
             this.helpProvider1.SetHelpString(this.SaveRestart, "Save schedule from text field below and restart CheshkaWatchDog");
-            this.SaveRestart.Location = new System.Drawing.Point(230, 82);
+            this.SaveRestart.Location = new System.Drawing.Point(218, 16);
             this.SaveRestart.Name = "SaveRestart";
             this.helpProvider1.SetShowHelp(this.SaveRestart, true);
             this.SaveRestart.Size = new System.Drawing.Size(113, 23);
@@ -75,9 +79,9 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(448, 82);
+            this.progressBar1.Location = new System.Drawing.Point(436, 16);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(154, 23);
+            this.progressBar1.Size = new System.Drawing.Size(142, 23);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 4;
             this.progressBar1.Visible = false;
@@ -85,7 +89,7 @@
             // Start
             // 
             this.helpProvider1.SetHelpString(this.Start, "Start CheshkaWatchDog service");
-            this.Start.Location = new System.Drawing.Point(18, 82);
+            this.Start.Location = new System.Drawing.Point(6, 16);
             this.Start.Name = "Start";
             this.helpProvider1.SetShowHelp(this.Start, true);
             this.Start.Size = new System.Drawing.Size(107, 23);
@@ -98,7 +102,7 @@
             // 
             this.helpProvider1.SetHelpKeyword(this.Stop, "");
             this.helpProvider1.SetHelpString(this.Stop, "Stop CheshkaWatchDog service");
-            this.Stop.Location = new System.Drawing.Point(131, 82);
+            this.Stop.Location = new System.Drawing.Point(119, 16);
             this.Stop.Name = "Stop";
             this.helpProvider1.SetShowHelp(this.Stop, true);
             this.Stop.Size = new System.Drawing.Size(93, 23);
@@ -143,6 +147,19 @@
             this.CLEAR.UseVisualStyleBackColor = true;
             this.CLEAR.Click += new System.EventHandler(this.CLEAR_Click);
             // 
+            // Status
+            // 
+            this.helpProvider1.SetHelpKeyword(this.Status, "");
+            this.helpProvider1.SetHelpString(this.Status, "Show status CheshkaWatchDog service");
+            this.Status.Location = new System.Drawing.Point(337, 16);
+            this.Status.Name = "Status";
+            this.helpProvider1.SetShowHelp(this.Status, true);
+            this.Status.Size = new System.Drawing.Size(93, 23);
+            this.Status.TabIndex = 10;
+            this.Status.Text = "Status";
+            this.Status.UseVisualStyleBackColor = true;
+            this.Status.Click += new System.EventHandler(this.Status_Click);
+            // 
             // backgroundWorker2
             // 
             this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
@@ -153,32 +170,51 @@
             this.backgroundWorker3.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker3_DoWork);
             this.backgroundWorker3.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker3_RunWorkerCompleted);
             // 
-            // Status
+            // groupBox1
             // 
-            this.helpProvider1.SetHelpKeyword(this.Status, "");
-            this.helpProvider1.SetHelpString(this.Status, "Show status CheshkaWatchDog service");
-            this.Status.Location = new System.Drawing.Point(349, 82);
-            this.Status.Name = "Status";
-            this.helpProvider1.SetShowHelp(this.Status, true);
-            this.Status.Size = new System.Drawing.Size(93, 23);
-            this.Status.TabIndex = 10;
-            this.Status.Text = "Status";
-            this.Status.UseVisualStyleBackColor = true;
-            this.Status.Click += new System.EventHandler(this.Status_Click);
+            this.groupBox1.Controls.Add(this.Start);
+            this.groupBox1.Controls.Add(this.Status);
+            this.groupBox1.Controls.Add(this.Stop);
+            this.groupBox1.Controls.Add(this.SaveRestart);
+            this.groupBox1.Controls.Add(this.progressBar1);
+            this.groupBox1.Location = new System.Drawing.Point(18, 215);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(584, 48);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // SELECT
+            // 
+            this.SELECT.Location = new System.Drawing.Point(18, 82);
+            this.SELECT.Name = "SELECT";
+            this.SELECT.Size = new System.Drawing.Size(184, 29);
+            this.SELECT.TabIndex = 12;
+            this.SELECT.Text = "CHOOSE EXECUTABLE";
+            this.SELECT.UseVisualStyleBackColor = true;
+            this.SELECT.Click += new System.EventHandler(this.SELECT_Click);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(18, 117);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(0, 0);
+            this.flowLayoutPanel1.TabIndex = 13;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(614, 111);
-            this.Controls.Add(this.Status);
+            this.ClientSize = new System.Drawing.Size(614, 272);
+            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.SELECT);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.CLEAR);
             this.Controls.Add(this.ADD);
             this.Controls.Add(this.dateTimePicker1);
-            this.Controls.Add(this.Stop);
-            this.Controls.Add(this.Start);
-            this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.SaveRestart);
             this.Controls.Add(this.textBox1);
             this.HelpButton = true;
             this.helpProvider1.SetHelpString(this, "If for some reason Start,Stop and etc. function didn\'t work, please use service.m" +
@@ -190,6 +226,7 @@
             this.helpProvider1.SetShowHelp(this, true);
             this.Text = "Configurator";
             this.Load += new System.EventHandler(this.FormLoad);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -209,6 +246,9 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private System.ComponentModel.BackgroundWorker backgroundWorker3;
         private System.Windows.Forms.Button Status;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button SELECT;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
 

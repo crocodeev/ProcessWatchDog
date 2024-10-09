@@ -15,18 +15,30 @@ using Quartz;
 using Quartz.Impl;
 using Microsoft.Win32;
 
-namespace CheshkaWatchDog
+namespace ProcessWatchDog
 {
-    public partial class CheskaWatchDog : ServiceBase
+    public partial class ProcessWatchDog : ServiceBase
     {
-        private string target = null;
-        private IScheduler _scheduler;
-        private string logSource = "CheshkaWatchDog";
-        private string logName = "CheshkaWatchDogLogs";
-        private EventLog logger = new EventLog();
-        private System.Timers.Timer pollingTimer = new System.Timers.Timer();
-        private System.Timers.Timer waitingTimer = new System.Timers.Timer();
+        /*
+         * Logger 
+         */
+        private string logSource = "ProcessWatchDog";
+        private string logName = "ProcessWatchDogLogs";
+        private EventLog logger;
+        /*
+         * Timer
+         */
+        private CustomTimer pollingTimer;
+        /*
+         * Target - реализовать чтение из реестра, пока для теста
+         */
+        private List<string> targets = new List<string> { };
 
+        private IScheduler _scheduler;
+        
+        /*
+         * Service works
+         */
         public enum ServiceState
         {
             SERVICE_STOPPED = 0x00000001,
@@ -50,11 +62,10 @@ namespace CheshkaWatchDog
             public int dwWaitHint;
         };
 
-        public CheskaWatchDog()
+        public ProcessWatchDog()
         {
             InitializeComponent();
-            waitingTimer.Elapsed += onWaitingTimer;
-            waitingTimer.Interval = 3 * 60 * 1000;
+           
             logger = new EventLog();
             if (!EventLog.SourceExists(logSource))
             {
@@ -62,13 +73,15 @@ namespace CheshkaWatchDog
                     logSource, logName);
             }
             logger.Source = logSource;
-            //logger.Log = logName;
-            //logger.Clear();
+            
         }
 
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(System.IntPtr handle, ref ServiceStatus serviceStatus);
 
+        /*
+         * Service start
+         */
         protected override void OnStart(string[] args)
         {
             logger.WriteEntry("Starting...", EventLogEntryType.Information);
@@ -81,26 +94,32 @@ namespace CheshkaWatchDog
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
 
-            try
-            {
-                target = GetTarget("RB_*.exe");
-            }
-            catch (Exception ex)
-            {
-                logger.WriteEntry(ex.Message);
-            }
+            GetTargets(targets);
 
-            if (target == null)
+            if (targets.Count == 0)
             {
-                logger.WriteEntry("There is no RB_*.exe on this PC", EventLogEntryType.Error);
+                logger.WriteEntry("There is no target processes...", EventLogEntryType.Error);
                 SelfStop();
             }
 
-            logger.WriteEntry("Waiting for RS to do job.", EventLogEntryType.Information);
+            targets.ForEach(t =>
+            {
+                if (!Check(t)) {
+                    StartProcess(t);
+                }
+            });
 
-            waitingTimer.Start();
+            pollingTimer = new CustomTimer(5000, onPollingTimer);
+
+            string schedule = GetSchedule();
+
+
+
         }
 
+        /*
+        * Service stop
+        */
         protected override void OnStop()
         {
             try {
@@ -132,54 +151,34 @@ namespace CheshkaWatchDog
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
         }
 
-        private void onPollingTimer(object sender, ElapsedEventArgs args)
-        {
 
-            if (!Check()) 
-            { 
-                Thread.Sleep(10000);
-                target = GetTarget("RB_*.exe");
-                if (!Check()) { 
-                    StartProcess();
-                }
-            }
+        /*
+         * Устаревшее
+         */
+        private void onPollingTimer(object sender, ElapsedEventArgs args) {
+
+            targets.ForEach(target => {
+
+                if (!Check(target)) {
+
+                    StartProcess(target);
+                };
+            });
+         
         }
 
-        private void onWaitingTimer(object sender, ElapsedEventArgs args) {
-
-            logger.WriteEntry("Run polling.", EventLogEntryType.Information);
-
-            pollingTimer.Elapsed += new ElapsedEventHandler(onPollingTimer);
-            pollingTimer.Interval = 5000;
-            pollingTimer.Start();
-
-            logger.WriteEntry("Setting schedule...", EventLogEntryType.Information);
-            string schedule = GetSettingFromRegistry();
-            logger.WriteEntry(schedule);
-            try
-            {
-              SetScheduler(schedule);
-            }
-            catch (Exception ex)
-            {
-
-              logger.WriteEntry(ex.Message, EventLogEntryType.Error);
-            }
-            waitingTimer.Stop();
-        }
-
-        private bool Check()
+        private bool Check(string target)
         {
             string name = GetBaseNameWithoutExtension(target);
             Process[] processes = Process.GetProcessesByName(name);
             if (processes.Length == 0)
             {
-                logger.WriteEntry(this.target + " does not running...", EventLogEntryType.Warning);
+                logger.WriteEntry(target + " does not running...", EventLogEntryType.Warning);
                 return false;
             }
             if (processes.Length > 2)
             {
-
+                logger.WriteEntry(target + "runned few times", EventLogEntryType.Warning);
                 foreach (Process process in processes)
                 {
 
@@ -200,7 +199,7 @@ namespace CheshkaWatchDog
 
         }
 
-        private void StartProcess() 
+        private void StartProcess(string target) 
         {
             try
             {
@@ -214,34 +213,21 @@ namespace CheshkaWatchDog
             
         }
 
-        private string Comparator(string a, string b)
+      
+        private void GetTargets(List<string> targets)
         {
 
-            string aBase = Path.GetFileName(a);
-            string bBase = Path.GetFileName(b);
-
-            return string.Compare(aBase, bBase, StringComparison.Ordinal) > 0 ? a : b;
-        }
-
-        private string GetTarget(string processName)
-        {
-
-            string[] programs = Array.Empty<string>();
-            string[] disks = { "C", "D", "E" };
-
-            foreach (string disk in disks)
+            try
             {
-                string directory = $"{disk}:\\Translate";
+                var namesOfProcesses = GetSettingFromRegistry <List<string>>("SOFTWARE\\Inplay\\ProcessWatchDog", "targets");
+                targets.AddRange(namesOfProcesses);
 
-                if (Directory.Exists(directory)){
-
-                    string[] filenames = Directory.GetFiles(directory, processName, SearchOption.AllDirectories);
-                    programs = programs.Concat(filenames).ToArray();
-                }
             }
+            catch (Exception e){ 
 
-            string target = programs.Aggregate(Comparator);
-            return target;
+                logger.WriteEntry($"Error: {e.Message}", EventLogEntryType.Error);
+            }
+       
         }
 
         private void SelfStop()
@@ -268,25 +254,34 @@ namespace CheshkaWatchDog
             catch (Exception ex)
             {
 
-                logger.WriteEntry($"Error: {ex.Message}");
+                logger.WriteEntry($"Error: {ex.Message}", EventLogEntryType.Error);
             }
         }
 
-        private string GetSettingFromRegistry()
+        private T GetSettingFromRegistry<T>(string registryKeyPath, string keyName)
         {
-      
-            string registryKeyPath = "SOFTWARE\\Inplay\\CheshkaWatchDog\\";
 
             using (var rootKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
             {
                 using (var key = rootKey.OpenSubKey(registryKeyPath, false)) {
                     if (key != null)
                     {
-                        return key.GetValue("schedule") as string;
+
+                        object value = key.GetValue(keyName);
+
+                        if (typeof(T) == typeof(List<string>) && value is string[])
+                        {
+
+                            return (T)(object)new List<string>((string[])value);
+                        }
+                        else if (typeof(T) == typeof(string) && value is string)
+                        {
+                            return (T)value;
+                        }
                     }
                 }
             }
-            return null;
+            return default;
         }
 
         private string GetBaseNameWithoutExtension(string fullName) {
@@ -296,31 +291,35 @@ namespace CheshkaWatchDog
             return clearName;
         }
 
+        private string GetSchedule() {
+
+            string schedule = GetSettingFromRegistry <string>("SOFTWARE\\Inplay\\ProcessWatchDog", "schedule");
+            return schedule;
+        }
+
         private void SetScheduler(string schedule)
         {
 
             if (schedule == null)
             {
+                logger.WriteEntry("Schedule is empty", EventLogEntryType.Warning);
                 return;
             }
 
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
             _scheduler = schedulerFactory.GetScheduler().Result;
-
             IEnumerable<TimeObject> timeObjects = TimeConverter.ConvertToTimeObjects(schedule);
-            string processName = GetBaseNameWithoutExtension(target);
 
             foreach (var item in timeObjects)
             {
                 Action<bool,string> callback = new Action<bool, string>(WriteInfo);
+                string[] processNames = targets.ToArray();
 
                 IJobDetail job = JobBuilder.Create<RestartJob>()
                 .WithIdentity($"jb {item.Hour}:{item.Minute}", "group1")
-                .UsingJobData(new JobDataMap {
-                    //{ "callback", callback},
-                    { "processName", processName }
-                })
                 .Build();
+
+                job.JobDataMap["processNames"] = processNames;
 
                 ITrigger trigger = TriggerBuilder.Create()
                     .WithIdentity($"tr {item.Hour}:{item.Minute}", "group1")
@@ -339,7 +338,7 @@ namespace CheshkaWatchDog
                 catch (Exception ex)
                 {
 
-                    logger.WriteEntry(ex.Message);
+                    logger.WriteEntry($"Error: {ex.Message}", EventLogEntryType.Error);
                 }
 
             }
@@ -361,5 +360,8 @@ namespace CheshkaWatchDog
 
         }
 
+        /*
+         * 
+         */
     }
 }

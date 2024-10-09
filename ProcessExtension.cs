@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CheshkaWatchDog
+namespace ProcessWatchDog
 {
     public static class ProcessExtension
     {

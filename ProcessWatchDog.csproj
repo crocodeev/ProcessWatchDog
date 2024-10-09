@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomTimer.cs" />
     <Compile Include="InstallerHelper.cs" />
     <Compile Include="Installer1.cs">
       <SubType>Component</SubType>
@@ -89,11 +90,11 @@
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
-    <Compile Include="CheskaWatchDog.cs">
+    <Compile Include="ProcessWatchDog.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CheskaWatchDog.Designer.cs">
-      <DependentUpon>CheskaWatchDog.cs</DependentUpon>
+    <Compile Include="ProcessWatchDog.Designer.cs">
+      <DependentUpon>ProcessWatchDog.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,8 +109,8 @@
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CheskaWatchDog.resx">
-      <DependentUpon>CheskaWatchDog.cs</DependentUpon>
+    <EmbeddedResource Include="ProcessWatchDog.resx">
+      <DependentUpon>ProcessWatchDog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

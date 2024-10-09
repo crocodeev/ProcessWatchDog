@@ -5,7 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Net.Http;
 
-namespace CheshkaWatchDog
+namespace ProcessWatchDog
 {
 
     public class RestartJob : IJob
@@ -22,19 +22,24 @@ namespace CheshkaWatchDog
         {
         
             JobDataMap dataMap = context.JobDetail.JobDataMap;
-            string processName = dataMap.GetString("processName");
+            string[] processNames = (string[]) dataMap["processNames"];
 
-            Process[] processes = Process.GetProcessesByName(processName);
-
-            foreach (var process in processes)
+            foreach (var name in processNames)
             {
-                try 
-                { process.Kill();
-                  //this.callback.Invoke(true, "Killing " + processName);
-                } 
-                catch (Exception)
+
+                Process[] processes = Process.GetProcessesByName(name);
+
+                foreach (var process in processes)
                 {
-                   //this.callback.Invoke(false, "Exeption killing process: " + ex.Message);  
+                    try
+                    {
+                        process.Kill();
+                        //this.callback.Invoke(true, "Killing " + processName);
+                    }
+                    catch (Exception)
+                    {
+                        //this.callback.Invoke(false, "Exeption killing process: " + ex.Message);  
+                    }
                 }
             }
 

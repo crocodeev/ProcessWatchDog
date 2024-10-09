@@ -1,5 +1,5 @@
 ﻿
-namespace CheshkaWatchDog
+namespace ProcessWatchDog
 {
     public class TimeObject
     {

@@ -1,6 +1,6 @@
-﻿namespace CheshkaWatchDog
+﻿namespace ProcessWatchDog
 {
-    partial class CheskaWatchDog
+    partial class ProcessWatchDog
     {
         /// <summary> 
         /// Обязательная переменная конструктора.
@@ -31,7 +31,7 @@
             // 
             // Service1
             // 
-            this.ServiceName = "CheshkaWatchDog";
+            this.ServiceName = "ProcessWatchDog";
 
         }
 

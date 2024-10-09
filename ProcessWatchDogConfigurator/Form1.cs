@@ -11,12 +11,13 @@ using System.Windows.Forms;
 using System.ServiceProcess;
 using System.Runtime.CompilerServices;
 
-namespace CheshkaWatchDogConfigurator
+namespace ProcessWatchDogConfigurator
 {
     public partial class Form1 : Form
     {
 
         private ServiceController serviceController;
+        private List<Control[]> processList = new List<Control[]>();
         public Form1()
         {
             InitializeComponent();
@@ -24,7 +25,7 @@ namespace CheshkaWatchDogConfigurator
 
         private string ReadFromRegistry() {
 
-            string watchDogPath = "SOFTWARE\\Inplay\\CheshkaWatchDog\\";
+            string watchDogPath = "SOFTWARE\\Inplay\\ProcessWatchDog\\";
             try
             {
                 RegistryKey root = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
@@ -101,6 +102,46 @@ namespace CheshkaWatchDogConfigurator
 
         private void CLEAR_Click(object sender, EventArgs e) {
             textBox1.Clear();
+        }
+
+        private void SELECT_Click(object sender, EventArgs e) { 
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "(*.exe)|*.exe";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                
+                string fullFilePath = openFileDialog.FileName;
+
+                TextBox textBox = new TextBox();
+                textBox.Width = 490;
+               
+                textBox.Text = fullFilePath;
+
+                Button removeBtn = new Button();
+                removeBtn.Text = "REMOVE";
+                removeBtn.Margin = new Padding(0, 2, 0, 5);
+                removeBtn.Click += (s, ev) => RemoveTextBox(textBox, removeBtn);
+
+                flowLayoutPanel1.Controls.Add(textBox);
+                flowLayoutPanel1.Controls.Add(removeBtn);
+                
+
+                processList.Add(new Control[] { textBox, removeBtn });
+            }
+        }
+
+        private void AddTextBox(string fullFilePath) 
+        {
+            
+        }
+
+        private void RemoveTextBox(TextBox textBox, Button removeButton)
+        {
+            flowLayoutPanel1.Controls.Remove(textBox);
+            flowLayoutPanel1.Controls.Remove(removeButton);
+
+            processList.Remove(new Control[] { textBox, removeButton });
         }
 
         private void SaveRestart_Click(object sender, EventArgs e)
@@ -233,6 +274,11 @@ namespace CheshkaWatchDogConfigurator
             Stop.Enabled = !Stop.Enabled;
             Start.Enabled = !Start.Enabled;
             progressBar1.Visible = !progressBar1.Visible;
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
 
         }
     }

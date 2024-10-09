@@ -5,7 +5,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CheshkaWatchDog
+namespace ProcessWatchDog
 {
     internal static class Program
     {
@@ -17,7 +17,7 @@ namespace CheshkaWatchDog
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new CheskaWatchDog()
+                new ProcessWatchDog()
             };
             ServiceBase.Run(ServicesToRun);
         }

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheshkaWatchDog", "CheshkaWatchDog.csproj", "{93135B60-48E0-4F4B-889E-93189319A543}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessWatchDog", "ProcessWatchDog.csproj", "{93135B60-48E0-4F4B-889E-93189319A543}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CheshkaWatchDogInstaller", "SetupCheshkaWatchDog\SetupCheshkaWatchDog.vdproj", "{94907FF2-268F-4025-B0CC-EDDC32119A88}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ProcessWatchDogInstaller", "SetupCheshkaWatchDog\SetupCheshkaWatchDog.vdproj", "{94907FF2-268F-4025-B0CC-EDDC32119A88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheshkaWatchDogConfigurator", "CheshkaWatchDogConfigurator\CheshkaWatchDogConfigurator.csproj", "{B3EDB6AC-6EFD-4C0D-88C2-60163AB187FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessWatchDogConfigurator", "ProcessWatchDogConfigurator\ProcessWatchDogConfigurator.csproj", "{B3EDB6AC-6EFD-4C0D-88C2-60163AB187FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
